@@ -29,26 +29,22 @@ change the TestConfiguration class. It is located
 public static final String CONNECTOR = "tcp://localhost:61616";
 ```
 
-Install
-----
-Just unpack the code. The project script is located in the bin directory and
-it is named "runtest.sh".
-
 
 Usage
 ----
 
-
+Annotate the test class with:
 
 ```
-export JAVA_OPTS="-Dnet.orpiske.jms.log.level=trace" ; ./runtest.sh
+@RunWith(JmsTestRunner.class)
+@Provider(
+        value = ActiveMqProvider.class,
+        configuration = ActiveMqConfiguration.class)
 ```
-
-Available log levels are verbose, debug and trace.
-
 
 References
 ----
 
 * [Main Site](http://orpiske.net/)
+* [Apache Active MQ](http://activemq.apache.org/)
 
