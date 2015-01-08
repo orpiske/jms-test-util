@@ -205,4 +205,6 @@ References
 ----
 
 * [Main Site](http://orpiske.net/)
+* [ActiveMQ Provider](https://github.com/orpiske/jms-test-provider-activemq)
+
 
