@@ -28,7 +28,7 @@ mvn clean install
 ```
 
 
-Usage and Annotations
+Usage and Annotationsgi
 ----
 
 Use the JmsTestRunner to run the tests (can be done with the @RunWith JUnit
@@ -171,6 +171,28 @@ public class RequestReplyStringTest extends AbstractRequestReply<TextMessage> {
         // handle the response
     }
 }
+```
+
+
+Dependencies
+----
+
+Once compiled and installed, you can refer to the dependencies as:
+
+```
+<dependency>
+    <groupId>net.orpiske</groupId>
+    <artifactId>jms-test-util</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+</dependency>
+
+<dependency>
+    <groupId>net.orpiske</groupId>
+    <artifactId>jms-test-util</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <type>test-jar</type>
+    <scope>test</scope>
+</dependency>
 ```
 
 Running
