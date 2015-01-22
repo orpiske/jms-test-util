@@ -28,7 +28,7 @@ mvn clean install
 ```
 
 
-Usage and Annotationsgi
+Usage and Annotations
 ----
 
 Use the JmsTestRunner to run the tests (can be done with the @RunWith JUnit
