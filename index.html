@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>JMS Test Utils by orpiske</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>JMS Test Utils</h1>
+          <h2></h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/orpiske/jms-test-util/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/orpiske/jms-test-util/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/orpiske/jms-test-util" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="jms-test-util" class="anchor" href="#jms-test-util" aria-hidden="true"><span class="octicon octicon-link"></span></a>JMS Test Util</h1>
+
+<h2>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span class="octicon octicon-link"></span></a>Introduction</h2>
+
+<p>This is a JUnit-based JMS test utility.</p>
+
+<h2>
+<a id="building-and-installing" class="anchor" href="#building-and-installing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Building and Installing</h2>
+
+<p>You can use Maven to build the project. No additional configuration or setup
+should* be required. To compile and package the project, please run:</p>
+
+<pre><code>mvn clean package
+</code></pre>
+
+<p>The build system will generate deliverables in zip, tar.bz2, tar.gz format.
+Project specific jars will also be generated.</p>
+
+<p>To install, just run:</p>
+
+<pre><code>mvn clean install
+</code></pre>
+
+<h2>
+<a id="usage-and-annotations" class="anchor" href="#usage-and-annotations" aria-hidden="true"><span class="octicon octicon-link"></span></a>Usage and Annotations</h2>
+
+<p>Use the JmsTestRunner to run the tests (can be done with the @RunWith JUnit
+annotation), annotate the producer, consumer fields and perform the test
+exchanges.</p>
+
+<pre><code>@RunWith(JmsTestRunner.class)
+@Provider(
+        value = MockProvider.class,
+        configuration = MockConfiguration.class)
+</code></pre>
+
+<p>The runner requires a JMS provider to run the tests. At this moment two
+providers are available: MockProvider, which uses the MockRunner JMS
+provider, and ActiveMqProvider, which creates and embedded ActiveMQ instance
+to run the tests (provided in another project). Others may be added in the
+future.</p>
+
+<p>Member variables must be annotated with appropriate methods.</p>
+
+<pre><code>@Producer
+</code></pre>
+
+<p>This is the message producer. It is used to send a request to the server and
+usually represents a client sending a transaction. It shares the same
+session as the consumer. If not specified, it will send requests to a default
+request queue (with replies set to the default response queue)</p>
+
+<pre><code>@Consumer
+</code></pre>
+
+<p>This represents a message consumer on the client-side. It shares the same
+session as the message producer.By default it is tied to the  default reply
+queue.</p>
+
+<p>Addresses for both the <a href="https://github.com/Consumer" class="user-mention">@Consumer</a> and <a href="https://github.com/Producer" class="user-mention">@Producer</a> can be specified with the
+address property.</p>
+
+<pre><code>@Consumer(address = Defaults.REPLY_TO_QUEUE)
+</code></pre>
+
+<pre><code>@JmsSession
+</code></pre>
+
+<p>Represents the active JMS Session.</p>
+
+<pre><code>@Listener
+</code></pre>
+
+<p>Represents a server. It receives the transactions sent by a producer,
+pseudo-process it and returns a message that is read by a consumer. At this
+moment the default ServerListener is not thread-safe, therefore there can be
+only one test method per class.</p>
+
+<p>Don't bother creating any of the fields. All of the fields properly annotated
+ will be injected by the runner during startup.</p>
+
+<h2>
+<a id="examples" class="anchor" href="#examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples</h2>
+
+<p>A basic synchronous send/receive test:</p>
+
+<pre><code>@RunWith(JmsTestRunner.class)
+@Provider(
+        value = ActiveMqProvider.class,
+        configuration = ActiveMqConfiguration.class)
+public class SendReceiveTest extends AbstractSendReceive {
+
+    @Consumer
+    private MessageConsumer consumer;
+
+    @Producer
+    private MessageProducer producer;
+
+    @JmsSession
+    private Session session;
+
+    @Test
+    public void testSendReceive() throws JMSException {
+        TextMessage request = session.createTextMessage("test");
+
+        producer.send(textMessage);
+
+        Message response = consumer.receive(5000);
+    }
+}
+</code></pre>
+
+<p>Using a server listener:</p>
+
+<pre><code>@RunWith(JmsTestRunner.class)
+@Provider(
+        value = MockProvider.class,
+        configuration = MockConfiguration.class)
+public class RequestReplyStringTest extends AbstractRequestReply&lt;TextMessage&gt; {
+    @Consumer(address = Defaults.REPLY_TO_QUEUE)
+    private MessageConsumer consumer;
+
+    @Producer
+    private MessageProducer producer;
+
+    @JmsSession
+    private Session session;
+
+    @Listener
+    private ServerListener listener;
+
+    @Test
+    public void testSendReceiveText() throws JMSException {
+        Destination replyTo = session.createQueue(Defaults.REPLY_TO_QUEUE);
+
+        Message request = session.createTextMessage("marco");
+        request.setJMSReplyTo(replyTo);
+        request.setStringProperty(ServerListener.REPLY_BUILDER,
+                        StringReplyBuilder.class.getName());
+
+        producer.send(request);
+
+        Message response = consumer.receive(1000 * 5);
+        // handle the response
+    }
+}
+</code></pre>
+
+<p>To customize the responses, so that you can elaborate more complex responses,
+modify headers, etc, you can implement a ReplyBuilder. The interface it's
+simple: given a Session and the request object, you can pseudo-process the
+request and give an adequate response that matches your tests.</p>
+
+<pre><code>public class StringReplyBuilder implements ReplyBuilder {
+    public Message build(Session session, Message request) throws JMSException {
+        return Util.createMessage(session, "polo");
+    }
+}
+</code></pre>
+
+<h2>
+<a id="dependencies" class="anchor" href="#dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies</h2>
+
+<p>Once compiled and installed, you can refer to the dependencies as:</p>
+
+<pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;net.orpiske&lt;/groupId&gt;
+    &lt;artifactId&gt;jms-test-util&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;net.orpiske&lt;/groupId&gt;
+    &lt;artifactId&gt;jms-test-util&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;type&gt;test-jar&lt;/type&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2>
+<a id="running" class="anchor" href="#running" aria-hidden="true"><span class="octicon octicon-link"></span></a>Running</h2>
+
+<p>The tests are run with JUnit. A main class is provided for running via
+command-line but it is not yet documented.</p>
+
+<h2>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span class="octicon octicon-link"></span></a>References</h2>
+
+<ul>
+<li><a href="http://orpiske.net/">Main Site</a></li>
+<li><a href="https://github.com/orpiske/jms-test-provider-activemq">ActiveMQ Provider</a></li>
+</ul>
+        </section>
+
+        <footer>
+          JMS Test Utils is maintained by <a href="https://github.com/orpiske">orpiske</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
