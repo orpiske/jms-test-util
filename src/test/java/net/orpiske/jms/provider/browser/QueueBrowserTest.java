@@ -42,7 +42,6 @@ import javax.jms.Session;
 @Provider(
         value = MockProvider.class,
         configuration = MockConfiguration.class)
-@Ignore
 public class QueueBrowserTest extends AbstractQueueBrowser {
     private static final Logger logger = LoggerFactory.getLogger
             (QueueBrowserTest.class);

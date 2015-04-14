@@ -17,6 +17,7 @@ package net.orpiske.jms.browser;
 
 import net.orpiske.jms.defaults.Defaults;
 import net.orpiske.jms.listener.ServerListener;
+import net.orpiske.jms.util.StringReplyBuilder;
 import net.orpiske.jms.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,9 @@ public abstract class AbstractQueueBrowser implements Callback {
         textMessage.setJMSReplyTo(replyTo);
         textMessage.setJMSExpiration(300000);
 
+        textMessage.setStringProperty(ServerListener.REPLY_BUILDER,
+                StringReplyBuilder.class.getName());
+
         producer.send(textMessage);
     }
 
@@ -64,8 +68,8 @@ public abstract class AbstractQueueBrowser implements Callback {
                       final ServerListener listener)
             throws JMSException
     {
+
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-        listener.setReply("polo");
 
         for (int i = 0; i < MESSAGE_COUNT; i++) {
             sendMessage(session, producer, i);

@@ -152,23 +152,33 @@ public class RequestReplyStringTest extends AbstractRequestReply<TextMessage> {
     @Listener
     private ServerListener listener;
 
-
-    @Before
-    public void setUp() throws JMSException {
-        listener.setReply("polo");
-    }
-
     @Test
     public void testSendReceiveText() throws JMSException {
         Destination replyTo = session.createQueue(Defaults.REPLY_TO_QUEUE);
 
         Message request = session.createTextMessage("marco");
         request.setJMSReplyTo(replyTo);
+        request.setStringProperty(ServerListener.REPLY_BUILDER,
+                        StringReplyBuilder.class.getName());
 
         producer.send(request);
 
         Message response = consumer.receive(1000 * 5);
         // handle the response
+    }
+}
+```
+
+To customize the responses, so that you can elaborate more complex responses,
+modify headers, etc, you can implement a ReplyBuilder. The interface it's
+simple: given a Session and the request object, you can pseudo-process the
+request and give an adequate response that matches your tests.
+
+
+```
+public class StringReplyBuilder implements ReplyBuilder {
+    public Message build(Session session, Message request) throws JMSException {
+        return Util.createMessage(session, "polo");
     }
 }
 ```

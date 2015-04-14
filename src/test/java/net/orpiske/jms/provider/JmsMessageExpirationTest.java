@@ -40,6 +40,10 @@ import javax.jms.Session;
 @Provider(
         value = MockProvider.class,
         configuration = MockConfiguration.class)
+/*
+ * It is ignored for MockProvider because it is not returning null for expired
+ * messages
+ */
 @Ignore
 public class JmsMessageExpirationTest extends AbstractMessageExpiration {
     /**

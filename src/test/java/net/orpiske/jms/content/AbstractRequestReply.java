@@ -19,15 +19,13 @@ import net.orpiske.jms.defaults.Defaults;
 
 import javax.jms.*;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 /**
  * Tests the ability to send/receive bytes messages
  */
 public abstract class AbstractRequestReply<T extends Message> {
-    protected static final String DEFAULT_REPLY = "polo";
-
-
     protected abstract T createRequestMessage() throws JMSException;
 
     protected abstract void execTypeSpecificTests(T response) throws JMSException;
@@ -54,7 +52,10 @@ public abstract class AbstractRequestReply<T extends Message> {
                     + response.getClass());
         }
 
-        execTypeSpecificTests((T) response);
+        assertEquals("The correlation ID don't match:",
+                request.getJMSCorrelationID(),
+                response.getJMSCorrelationID());
 
+        execTypeSpecificTests((T) response);
     }
 }

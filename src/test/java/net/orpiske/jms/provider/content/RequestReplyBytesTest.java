@@ -21,6 +21,7 @@ import net.orpiske.jms.listener.ServerListener;
 import net.orpiske.jms.provider.configuration.MockConfiguration;
 import net.orpiske.jms.provider.mock.MockProvider;
 import net.orpiske.jms.test.runner.JmsTestRunner;
+import net.orpiske.jms.util.BytesReplyBuilder;
 import net.orpiske.jms.util.Util;
 import net.orpiske.jms.test.annotations.*;
 import org.junit.Before;
@@ -74,18 +75,15 @@ public class RequestReplyBytesTest extends AbstractRequestReply<BytesMessage> {
     @Listener
     private ServerListener listener;
 
-
-    @Before
-    public void setUp() throws JMSException {
-        listener.setReply((DEFAULT_REPLY).getBytes());
-    }
-
     @Override
     protected BytesMessage createRequestMessage() throws JMSException {
         BytesMessage bytesMessage = Util.createMessage(session,
                 ("marco").getBytes());
 
         bytesMessage.setJMSCorrelationID(randomId());
+        bytesMessage.setStringProperty(ServerListener.REPLY_BUILDER,
+                BytesReplyBuilder.class.getName());
+
 
         return bytesMessage;
     }
@@ -109,7 +107,7 @@ public class RequestReplyBytesTest extends AbstractRequestReply<BytesMessage> {
             String returned = new String(data);
 
             assertEquals("The received message does not match the sent one",
-                    AbstractRequestReply.DEFAULT_REPLY, returned);
+                    "polo", returned);
         } while (readBytes < bodyLength);
     }
 

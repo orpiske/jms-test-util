@@ -16,6 +16,7 @@
 package net.orpiske.jms;
 
 import net.orpiske.jms.listener.ServerListener;
+import net.orpiske.jms.util.StringReplyBuilder;
 import net.orpiske.jms.util.Util;
 
 import javax.jms.*;
@@ -33,7 +34,7 @@ public abstract class AbstractMessageExpiration {
     protected void setUp(final MessageProducer producer, final ServerListener
                       listener) throws JMSException {
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-        listener.setReply("expired polo");
+
 
         // Sets the that the listener should use for the reply message
         listener.setTimeToLive(MESSAGE_TTL);
@@ -60,6 +61,8 @@ public abstract class AbstractMessageExpiration {
         String correlationId = Util.randomId();
         textMessage.setJMSCorrelationID(correlationId);
         textMessage.setJMSReplyTo(replyTo);
+        textMessage.setStringProperty(ServerListener.REPLY_BUILDER,
+                StringReplyBuilder.class.getName());
 
         // Sends it
         producer.send(textMessage);

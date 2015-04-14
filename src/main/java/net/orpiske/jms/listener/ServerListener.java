@@ -15,13 +15,10 @@
  */
 package net.orpiske.jms.listener;
 
-import net.orpiske.jms.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jms.*;
-import java.io.Serializable;
-import java.util.Map;
 
 /**
  * A simple, non-thread safe, server listener.
@@ -29,6 +26,7 @@ import java.util.Map;
 public abstract class ServerListener implements MessageListener {
     public static final String MESSAGE_COUNT = "properties.message.count";
     public static final String LISTENER = "properties.listener.name";
+    public static final String REPLY_BUILDER = "properties.reply.builder";
 
     private static final Logger logger = LoggerFactory.getLogger
             (ServerListener.class);
@@ -111,6 +109,8 @@ public abstract class ServerListener implements MessageListener {
         counter++;
 
         try {
+            reply = getReply(message);
+
             // Set the reply message properties
             reply.setJMSCorrelationID(message.getJMSCorrelationID());
             reply.setIntProperty(MESSAGE_COUNT, counter);
@@ -131,9 +131,44 @@ public abstract class ServerListener implements MessageListener {
         } catch (JMSException e) {
             logger.error("Unable to process the message: {}", e.getMessage(),
                     e);
+        } catch (ClassNotFoundException e) {
+            logger.error("Unable to create a reply builder: {}", e
+                    .getMessage(), e);
+        } catch (InstantiationException e) {
+            logger.error("Unable to instantiate a reply builder: {}", e
+                    .getMessage(), e);
+        } catch (IllegalAccessException e) {
+            logger.error("Illegal access to the reply builder: {}", e
+                    .getMessage(), e);
         }
     }
 
+    private Message getReply(Message message) throws JMSException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        String replyBuilderClass = message.getStringProperty(REPLY_BUILDER);
+        if (replyBuilderClass != null && !replyBuilderClass.isEmpty()) {
+
+            Class<?> builderClazz = Class.forName(replyBuilderClass);
+
+            Object object = builderClazz.newInstance();
+
+            if (object instanceof ReplyBuilder) {
+                ReplyBuilder replyBuilder = (ReplyBuilder) object;
+
+                return replyBuilder.build(session, message);
+            }
+            else {
+                logger.warn("The reply class is not a ReplyBuilder instance.");
+            }
+        }
+        else {
+            logger.warn("The test did not set up a reply builder");
+        }
+
+        logger.warn("Returning null since a response couldn't be built");
+        return null;
+    }
+
+    /*
     public void setReply(byte[] bytes) throws JMSException {
         reply = Util.createMessage(session, bytes);
     }
@@ -151,6 +186,7 @@ public abstract class ServerListener implements MessageListener {
     public <V> void setReply(Map<String, V> map) throws JMSException {
        reply = Util.createMessage(session, map);
     }
+    */
 
     public void setTimeToLive(long expiration) {
         this.timeToLive = expiration;

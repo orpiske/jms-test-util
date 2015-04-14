@@ -16,6 +16,7 @@
 package net.orpiske.jms;
 
 import net.orpiske.jms.listener.ServerListener;
+import net.orpiske.jms.util.StringReplyBuilder;
 import org.junit.Test;
 
 import javax.jms.*;
@@ -33,7 +34,7 @@ public abstract class AbstractMessageOverTopic {
     public void setUp(Session session, MessageProducer producer,
                       ServerListener listener) throws JMSException {
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-        listener.setReply("polo");
+
 
         Destination replyTo = session.createTemporaryQueue();
 
@@ -42,6 +43,9 @@ public abstract class AbstractMessageOverTopic {
         String correlationId = randomId();
         requestMessage.setJMSCorrelationID(correlationId);
         requestMessage.setJMSReplyTo(replyTo);
+
+        requestMessage.setStringProperty(ServerListener.REPLY_BUILDER,
+                StringReplyBuilder.class.getName());
 
         producer.send(requestMessage);
 
