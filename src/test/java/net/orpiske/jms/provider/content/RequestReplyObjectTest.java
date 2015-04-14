@@ -23,6 +23,7 @@ import net.orpiske.jms.listener.ServerListener;
 import net.orpiske.jms.provider.activemq.ActiveMqProvider;
 import net.orpiske.jms.content.fixtures.Fixtures;
 import net.orpiske.jms.test.runner.JmsTestRunner;
+import net.orpiske.jms.util.SerializableReplyBuilder;
 import net.orpiske.jms.util.Util;
 import net.orpiske.jms.test.annotations.*;
 import org.junit.Before;
@@ -84,9 +85,6 @@ public class RequestReplyObjectTest extends
     @Before
     public void setUp() throws JMSException {
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-
-        DummySerializable replyData = Fixtures.newDummySerializable("polo");
-        listener.setReply(replyData);
     }
 
     @Override
@@ -97,6 +95,8 @@ public class RequestReplyObjectTest extends
                 session.createObjectMessage(dummySerializable);
 
         objectMessage.setJMSCorrelationID(Util.randomId());
+        objectMessage.setStringProperty(ServerListener.REPLY_BUILDER,
+                SerializableReplyBuilder.class.getName());
         return objectMessage;
     }
 

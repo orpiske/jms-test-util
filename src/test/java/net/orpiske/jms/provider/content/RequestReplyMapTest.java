@@ -21,6 +21,7 @@ import net.orpiske.jms.defaults.Defaults;
 import net.orpiske.jms.listener.ServerListener;
 import net.orpiske.jms.provider.activemq.ActiveMqProvider;
 import net.orpiske.jms.test.runner.JmsTestRunner;
+import net.orpiske.jms.util.MapReplyBuilder;
 import net.orpiske.jms.util.Util;
 import net.orpiske.jms.test.annotations.*;
 import org.junit.Before;
@@ -80,18 +81,6 @@ public class RequestReplyMapTest extends AbstractRequestReply<MapMessage> {
     private ServerListener listener;
 
 
-    @Before
-    public void setUp() throws JMSException {
-        Map<String, String> replyMap = new HashMap<String, String>();
-
-        replyMap.put("key4", "value4");
-        replyMap.put("key5", "value5");
-        replyMap.put("key6", "value6");
-
-        listener.setReply(replyMap);
-    }
-
-
     private Map<String, String> getStringStringMap() {
         Map<String, String> testMap = new HashMap<String, String>();
 
@@ -107,6 +96,8 @@ public class RequestReplyMapTest extends AbstractRequestReply<MapMessage> {
 
         MapMessage mapMessage = Util.createMessage(session, testMap);
         mapMessage.setJMSCorrelationID(randomId());
+        mapMessage.setStringProperty(ServerListener.REPLY_BUILDER,
+                MapReplyBuilder.class.getName());
 
         return mapMessage;
     }

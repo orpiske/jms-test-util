@@ -22,6 +22,7 @@ import net.orpiske.jms.listener.ServerListener;
 import net.orpiske.jms.provider.activemq.ActiveMqProvider;
 import net.orpiske.jms.test.runner.JmsTestRunner;
 import net.orpiske.jms.test.annotations.*;
+import net.orpiske.jms.util.StringReplyBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,23 +77,20 @@ public class RequestReplyStringTest extends AbstractRequestReply<TextMessage> {
     private ServerListener listener;
 
 
-    @Before
-    public void setUp() throws JMSException {
-        listener.setReply("polo");
-    }
-
     @Override
     protected TextMessage createRequestMessage() throws JMSException {
         TextMessage textMessage = session.createTextMessage("marco");
 
         textMessage.setJMSCorrelationID(randomId());
+        textMessage.setStringProperty(ServerListener.REPLY_BUILDER,
+                StringReplyBuilder.class.getName());
         return textMessage;
     }
 
     @Override
     protected void execTypeSpecificTests(TextMessage response) throws JMSException {
         assertEquals("The received message does not match the sent one",
-                DEFAULT_REPLY, response.getText());
+                "polo", response.getText());
     }
 
     /**

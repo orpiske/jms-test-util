@@ -81,14 +81,16 @@ public class TopicStringTest extends AbstractTopic<TextMessage> {
     @Before
     public void setUp() throws JMSException {
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
-
-        listener1.setReply("polo0");
-        listener2.setReply("polo1");
     }
 
     @Override
     protected TextMessage createRequestMessage() throws JMSException {
-        return session.createTextMessage("marco");
+        TextMessage request = session.createTextMessage("marco");
+
+        request.setStringProperty(ServerListener.REPLY_BUILDER,
+                TopicStringReplyBuilder.class.getName());
+
+        return request;
     }
 
     @Override
