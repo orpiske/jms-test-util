@@ -18,10 +18,10 @@ jms-test-provider-activemq-1.0.0
 ```
 
 You can use Maven to build the project. No additional configuration or setup
-should* be required. To compile and package the project, please run:
+should* be required. To compile and installgi the project, please run:
 
 ```
-mvn clean package
+mvn clean install
 ```
 
 The build system will generate deliverables in zip, tar.bz2, tar.gz format.
