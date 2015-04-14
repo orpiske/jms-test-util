@@ -10,8 +10,16 @@ This is a JUnit-based JMS test utility.
 Building and Installing
 ----
 
+
+To download the project you can use:
+
+```
+git clone https://github.com/orpiske/jms-test-util.git -b jms-test-util-1.0.0
+```
+
 You can use Maven to build the project. No additional configuration or setup
 should* be required. To compile and package the project, please run:
+
 
 ```
 mvn clean package
