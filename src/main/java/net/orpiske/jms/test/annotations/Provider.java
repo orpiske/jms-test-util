@@ -40,12 +40,12 @@ public @interface Provider {
      * The provider to use
      * @return
      */
-    public Class<? extends JmsProvider> value();
+    Class<? extends JmsProvider> value();
 
     /**
      * The configuration object to apply to the provider
      * @return
      */
-    public Class<? extends ProviderConfiguration> configuration()
+    Class<? extends ProviderConfiguration> configuration()
             default DefaultConfiguration.class;
 }

@@ -26,5 +26,5 @@ public interface Callback {
      *
      * @param object the current element (exchange) being inspected in the queue
      */
-    public void execute(final Object object);
+    void execute(final Object object);
 }
