@@ -168,26 +168,6 @@ public abstract class ServerListener implements MessageListener {
         return null;
     }
 
-    /*
-    public void setReply(byte[] bytes) throws JMSException {
-        reply = Util.createMessage(session, bytes);
-    }
-
-
-    public void setReply(String text) throws JMSException {
-        reply = Util.createMessage(session, text);
-    }
-
-
-    public void setReply(Serializable serializable) throws JMSException {
-        reply = Util.createMessage(session, serializable);
-    }
-
-    public <V> void setReply(Map<String, V> map) throws JMSException {
-       reply = Util.createMessage(session, map);
-    }
-    */
-
     public void setTimeToLive(long expiration) {
         this.timeToLive = expiration;
     }
