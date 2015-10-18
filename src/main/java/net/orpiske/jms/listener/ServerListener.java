@@ -24,9 +24,9 @@ import javax.jms.*;
  * A simple, non-thread safe, server listener.
  */
 public abstract class ServerListener implements MessageListener {
-    public static final String MESSAGE_COUNT = "properties.message.count";
-    public static final String LISTENER = "properties.listener.name";
-    public static final String REPLY_BUILDER = "properties.reply.builder";
+    public static final String MESSAGE_COUNT = "properties_message_count";
+    public static final String LISTENER = "properties_listener_name";
+    public static final String REPLY_BUILDER = "properties_reply_builder";
 
     private static final Logger logger = LoggerFactory.getLogger
             (ServerListener.class);
