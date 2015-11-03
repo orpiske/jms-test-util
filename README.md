@@ -7,35 +7,6 @@ Introduction
 This is a JUnit-based JMS test utility.
 
 
-Building and Installing
-----
-
-
-To download the project you can use:
-
-```
-git clone https://github.com/orpiske/jms-test-util.git -b jms-test-util-1.0.0
-```
-
-You can use Maven to build the project. No additional configuration or setup
-should* be required. To compile and package the project, please run:
-
-
-```
-mvn clean package
-```
-
-The build system will generate deliverables in zip, tar.bz2, tar.gz format.
-Project specific jars will also be generated.
-
-
-To install, just run:
-
-```
-mvn clean install
-```
-
-
 Usage and Annotations
 ----
 
@@ -195,22 +166,52 @@ public class StringReplyBuilder implements ReplyBuilder {
 Dependencies
 ----
 
-Once compiled and installed, you can refer to the dependencies as:
+The code is available on [Maven Central](http://central.sonatype.org/). To use it, just add the following dependencies
+to your project:
 
 ```
 <dependency>
     <groupId>net.orpiske</groupId>
     <artifactId>jms-test-util</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1</version>
 </dependency>
 
 <dependency>
     <groupId>net.orpiske</groupId>
     <artifactId>jms-test-util</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.1</version>
     <type>test-jar</type>
     <scope>test</scope>
 </dependency>
+```
+
+
+Building and Installing
+----
+
+
+To download the project you can use (replace <version> with the version number, ie.: 1.0.0):
+
+```
+git clone https://github.com/orpiske/jms-test-util.git -b jms-test-util-<version>
+```
+
+You can use Maven to build the project. No additional configuration or setup
+should* be required. To compile and package the project, please run:
+
+
+```
+mvn clean package
+```
+
+The build system will generate deliverables in zip, tar.bz2, tar.gz format.
+Project specific jars will also be generated.
+
+
+To install, just run:
+
+```
+mvn clean install
 ```
 
 Running
