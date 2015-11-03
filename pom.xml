@@ -18,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.orpiske</groupId>
     <artifactId>jms-test-util</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
 
 
     <dependencies>
@@ -185,7 +185,7 @@
         <connection>scm:git:git@github.com:orpiske/jms-test-util.git</connection>
         <developerConnection>scm:git:git@github.com:orpiske/jms-test-util.git</developerConnection>
         <url>git@github.com:orpiske/jms-test-util.git</url>
-      <tag>jms-test-util-1.0.1</tag>
+      <tag>HEAD</tag>
   </scm>
 
     <distributionManagement>
