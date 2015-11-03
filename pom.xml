@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <!--
        Copyright 2012 Otavio Rodolfo Piske
@@ -18,7 +19,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.orpiske</groupId>
     <artifactId>jms-test-util</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.1-SNAPSHOT</version>
 
 
     <dependencies>
@@ -185,8 +186,7 @@
         <connection>scm:git:git@github.com:orpiske/jms-test-util.git</connection>
         <developerConnection>scm:git:git@github.com:orpiske/jms-test-util.git</developerConnection>
         <url>git@github.com:orpiske/jms-test-util.git</url>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
