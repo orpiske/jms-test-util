@@ -20,6 +20,9 @@
     <groupId>net.orpiske</groupId>
     <artifactId>jms-test-util</artifactId>
     <version>1.0.1-SNAPSHOT</version>
+    <name>JMS Test Util</name>
+    <description>This is a JUnit-based JMS test utility</description>
+    <url>http://orpiske.github.io/jms-test-util/</url>
 
     <licenses>
         <license>
