@@ -173,8 +173,20 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+            </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:git@github.com:orpiske/jms-test-util.git</connection>
+        <developerConnection>scm:git:git@github.com:orpiske/jms-test-util.git</developerConnection>
+        <url>git@github.com:orpiske/jms-test-util.git</url>
+    </scm>
 
     <distributionManagement>
         <snapshotRepository>
