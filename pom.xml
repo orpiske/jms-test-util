@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <!--
        Copyright 2012 Otavio Rodolfo Piske
@@ -19,7 +18,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.orpiske</groupId>
     <artifactId>jms-test-provider-activemq</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>JMS Test Util: ActiveMQ Provider</name>
     <description>This is an Active MQ provider for  JMS Test Util</description>
     <url>http://orpiske.github.io/jms-test-util/</url>
@@ -143,7 +142,7 @@
         <connection>scm:git:git@github.com:orpiske/jms-test-util.git</connection>
         <developerConnection>scm:git:git@github.com:orpiske/jms-test-util.git</developerConnection>
         <url>git@github.com:orpiske/jms-test-util.git</url>
-        <tag>HEAD</tag>
+        <tag>jms-test-provider-activemq-1.0.1</tag>
     </scm>
 
     <distributionManagement>
