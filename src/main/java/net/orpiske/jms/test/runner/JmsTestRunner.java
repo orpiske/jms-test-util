@@ -81,10 +81,14 @@ public class JmsTestRunner extends BlockJUnit4ClassRunner {
      * @throws InitializationError
      */
     private void startProvider() throws InitializationError {
-        try {
+        if (jmsProvider == null) {
+            throw new InitializationError("Invalid JMS provider: null");
+        }
 
+        try {
             jmsProvider.start();
         } catch (ProviderInitializationException e) {
+            e.printStackTrace();
             throw new InitializationError(e);
         }
     }
