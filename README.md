@@ -6,6 +6,10 @@ Introduction
 
 This is a JUnit-based JMS test utility.
 
+Build Status
+----
+
+Build Status: [![Linux Build Status](https://travis-ci.org/orpiske/jms-test-util.svg?branch=master)](https://travis-ci.org/orpiske/jms-test-util)
 
 Building
 ----
