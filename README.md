@@ -7,9 +7,12 @@ Introduction
 This is a JUnit-based JMS test utility.
 
 
-Building and Installing
+Building
 ----
 
+
+This is only required if you want to compile it manually. Skip to usage for using the 
+binary versions available in the bintray Maven repository.
 
 To download the project you can use:
 
@@ -36,8 +39,46 @@ mvn clean install
 ```
 
 
+
 Usage and Annotations
 ----
+
+Using as Library
+----
+
+**Dependencies**:
+
+To use this project as library on your project you have to add my personal 
+[bintray](https://bintray.com/orpiske/libs-release/) repository to the pom.xml
+file:
+
+```
+<repositories>
+    <repository>
+        <id>orpiske-repo</id>
+        <url>https://dl.bintray.com/orpiske/libs-release</url>
+    </repository>
+</repositories>
+```
+
+Then, the library can be referenced as: 
+```
+<dependency>
+    <groupId>net.orpiske</groupId>
+    <artifactId>jms-test-util</artifactId>
+    <version>1.1.0</version>
+</dependency>
+```
+
+**Note**: replace version with the latest available version you wish to use.
+
+**API Documentation**:
+
+**API**:
+
+The API documentation (javadoc) is available [here](http://www.orpiske.net/files/javadoc/jms-test-util-1.1/apidocs/). 
+
+**Usage**:
 
 Use the JmsTestRunner to run the tests (can be done with the @RunWith JUnit
 annotation), annotate the producer, consumer fields and perform the test
