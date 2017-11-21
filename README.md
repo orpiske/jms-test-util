@@ -97,8 +97,8 @@ exchanges.
 
 The runner requires a JMS provider to run the tests. At this moment two
 providers are available: MockProvider, which uses the MockRunner JMS
-provider, and ActiveMqProvider, which creates and embedded ActiveMQ instance
-to run the tests (provided in another project). Others may be added in the
+provider, and [ActiveMqProvider](https://github.com/orpiske/jms-test-provider-activemq), which creates an
+embedded ActiveMQ instance to run the tests (provided in another project). Others may be added in the
 future.
 
 
@@ -185,6 +185,8 @@ public class SendReceiveTest extends AbstractSendReceive {
 }
 ```
 
+**Note**: the example above uses the [ActiveMqProvider](https://github.com/orpiske/jms-test-provider-activemq).
+
 Using a server listener:
 
 ```
@@ -235,6 +237,7 @@ public class StringReplyBuilder implements ReplyBuilder {
     }
 }
 ```
+
 
 
 Dependencies
