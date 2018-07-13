@@ -20,6 +20,9 @@ import net.orpiske.jms.provider.ProviderConfiguration;
 import net.orpiske.jms.provider.exception.ProviderInitializationException;
 import net.orpiske.jms.provider.mock.MockProvider;
 import net.orpiske.jms.test.annotations.*;
+import org.junit.runner.Description;
+import org.junit.runner.Result;
+import org.junit.runner.notification.RunListener;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
@@ -39,6 +42,21 @@ import java.lang.reflect.Field;
  * message listeners.
  */
 public class JmsTestRunner extends BlockJUnit4ClassRunner {
+    private static class JmsTestListener extends RunListener {
+        private JmsProvider jmsProvider;
+
+        public JmsTestListener(final JmsProvider jmsProvider) {
+            this.jmsProvider = jmsProvider;
+        }
+
+        @Override
+        public void testRunFinished(Result result) throws Exception {
+            System.out.println("Terminating the JMS provider");
+            jmsProvider.stop();
+            super.testRunFinished(result);
+        }
+    }
+
     private static final Logger logger = LoggerFactory.getLogger
             (JmsTestRunner.class);
 
@@ -86,6 +104,7 @@ public class JmsTestRunner extends BlockJUnit4ClassRunner {
         }
 
         try {
+            logger.info("Starting the JMS provider");
             jmsProvider.start();
         } catch (ProviderInitializationException e) {
             e.printStackTrace();
@@ -244,15 +263,14 @@ public class JmsTestRunner extends BlockJUnit4ClassRunner {
 
     @Override
     public void run(RunNotifier notifier) {
-        logger.info("Starting the JMS provider");
         try {
             startProvider();
         } catch (InitializationError e) {
             logger.error("Unable to start the provider: {}", e.getMessage(), e);
         }
 
+        notifier.addListener(new JmsTestListener(jmsProvider));
         super.run(notifier);
-        jmsProvider.stop();
-        logger.info("Stopping the JMS provider");
+//        jmsProvider.stop();
     }
 }
