@@ -80,7 +80,7 @@ public class JmsTestRunner extends BlockJUnit4ClassRunner {
      * Starts the provider
      * @throws InitializationError
      */
-    private void startProvider() throws InitializationError {
+    private void startProvider() throws InitializationError, InterruptedException {
         if (jmsProvider == null) {
             throw new InitializationError("Invalid JMS provider: null");
         }
@@ -249,6 +249,10 @@ public class JmsTestRunner extends BlockJUnit4ClassRunner {
             startProvider();
         } catch (InitializationError e) {
             logger.error("Unable to start the provider: {}", e.getMessage(), e);
+        }
+        catch (InterruptedException e) {
+            logger.error("Unable to start the provider because it was interrupted: {}", e.getMessage(), e);
+            return;
         }
 
         super.run(notifier);

@@ -29,7 +29,7 @@ public abstract class AbstractProvider implements JmsProvider {
     protected Session session;
     protected Connection connection;
 
-    abstract public void start() throws ProviderInitializationException;
+    abstract public void start() throws ProviderInitializationException, InterruptedException;
 
     abstract public void stop();
 

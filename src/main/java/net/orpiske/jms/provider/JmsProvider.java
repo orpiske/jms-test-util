@@ -32,7 +32,7 @@ public interface JmsProvider {
      * @throws ProviderInitializationException if unable to start it (root
      * causes may be appended)
      */
-    void start() throws ProviderInitializationException;
+    void start() throws ProviderInitializationException, InterruptedException;
 
 
     /**
